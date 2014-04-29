@@ -1,4 +1,4 @@
 CoreData-Typhoon-iOS
 ====================
 
-CoreData components injected by Typhoon for iOS
+Typhoon assembly of CoreData components for iOS
