@@ -7,6 +7,8 @@
 //
 
 #import "CTAppDelegate.h"
+#import "Typhoon.h"
+#import "CTiOSCoreDataAssembly.h"
 
 @implementation CTAppDelegate
 
@@ -14,8 +16,25 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
+- (void)loadFactory
+{
+    TyphoonComponentFactory *factory = [[TyphoonBlockComponentFactory alloc] initWithAssemblies:@[[CTiOSCoreDataAssembly assembly]]];
+    
+    id <TyphoonResource> configurationProperties = [TyphoonBundleResource withName:@"Configuration.properties"];
+    [factory attachPostProcessor:[TyphoonPropertyPlaceholderConfigurer configurerWithResource:configurationProperties]];
+    [factory makeDefault];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self loadFactory];
+
+    NSManagedObjectModel *managedObjectModel = [(CTiOSCoreDataAssembly *)[TyphoonComponentFactory defaultFactory] managedObjectModel];
+    NSPersistentStoreCoordinator *persistentStoreCoordinator = [(CTiOSCoreDataAssembly *)[TyphoonComponentFactory defaultFactory] persistentStoreCoordinator];
+
+    NSManagedObjectContext *mainContext = [(CTiOSCoreDataAssembly *)[TyphoonComponentFactory defaultFactory] mainManagedObjectContext];
+    NSManagedObjectContext *childContext = [(CTiOSCoreDataAssembly *)[TyphoonComponentFactory defaultFactory] childManagedObjectContext];
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
