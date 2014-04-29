@@ -7,14 +7,6 @@
 #import "Typhoon.h"
 
 
-@interface NSPersistentStoreCoordinator (InjectedInitialization)
-
-- (instancetype)initWithManagedObjectModel:(NSManagedObjectModel *)model type:(NSString *)type URL:(NSURL *)storeURL
-                                   options:(NSDictionary *)options;
-
-@end
-
-
 @interface CTiOSCoreDataAssembly : TyphoonAssembly
 
 - (id)mainManagedObjectContext;
